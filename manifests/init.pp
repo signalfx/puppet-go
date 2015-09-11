@@ -73,10 +73,7 @@ class golang (
   }
 
   exec { 'remove-previous-version-file':
-    command => "rm $HOME/.go-version",
-    onlyif  => [
-      "test -f $HOME/.go-version",
-    ],
+    command => "rm -f $HOME/.go-version",
     before  => Exec['unarchive'],
   }
 
