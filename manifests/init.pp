@@ -47,8 +47,9 @@ class golang (
 
   exec { 'download':
     command => "curl -o ${download_dir}/go-${version}.tar.gz ${download_location}",
+    environment => ["GOROOT=${::boxen_home}/go"]
     creates => "${download_dir}/go-${version}.tar.gz",
-    unless  => "GOROOT=${::boxen_home}/go version | grep ' go${version} '",
+    unless  => "go version | grep ' go${version} '",
     require => Package['curl'],
   } ->
   exec { 'unarchive':
