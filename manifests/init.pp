@@ -65,7 +65,7 @@ class golang (
   }
 
   exec { 'remove-previous':
-    command => 'rm -rf ${::boxen_home}/go',
+    command => "rm -rf ${::boxen_home}/go",
     onlyif  => [
       "test -d ${::boxen_home}/go",
     ],
