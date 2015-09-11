@@ -46,13 +46,13 @@ class golang (
   }
 
   exec { 'download':
-    command => "curl -o ${download_dir}/go-${version}.tar.gz ${download_location}",
+    command => "test -f ${download_dir}/go-${version}.tar.gz || curl -o ${download_dir}/go-${version}.tar.gz ${download_location}",
     creates => "${download_dir}/go-${version}.tar.gz",
-    unless  => "which go && go version | grep ' go${version} '",
+    unless  => "test -f which go && go version | grep ' go${version} '",
     require => Package['curl'],
   } ->
   exec { 'unarchive':
-    command => "tar -C ${::boxen_home} -xzf ${download_dir}/go-${version}.tar.gz && rm ${download_dir}/go-${version}.tar.gz",
+    command => "tar -C ${::boxen_home} -xzf ${download_dir}/go-${version}.tar.gz",
     onlyif  => "test -f ${download_dir}/go-${version}.tar.gz",
   }
 
@@ -81,7 +81,7 @@ class golang (
   }
 
   exec { 'link_workspace':
-    command => "mkdir -p {$workspace}",
+    command => "mkdir -p $workspace",
     unless => "ls {$workspace}",
     before  => Exec['unarchive'],
   }
