@@ -48,7 +48,7 @@ class golang (
   exec { 'download':
     command => "curl -o ${download_dir}/go-${version}.tar.gz ${download_location}",
     creates => "${download_dir}/go-${version}.tar.gz",
-    unless  => "go version | grep ' go${version} '",
+    unless  => "GOROOT=${:boxen_home}/go version | grep ' go${version} '",
     require => Package['curl'],
   } ->
   exec { 'unarchive':
@@ -67,13 +67,7 @@ class golang (
     command => 'rm -r ${::boxen_home}/go',
     onlyif  => [
       "test -d ${::boxen_home}/go",
-      "which go && test `go version | cut -d' ' -f 3` != ' go${version} '",
     ],
-    before  => Exec['unarchive'],
-  }
-
-  exec { 'remove-previous-version-file':
-    command => "rm -f $HOME/.go-version",
     before  => Exec['unarchive'],
   }
 
