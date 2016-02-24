@@ -59,6 +59,7 @@ class golang (
     onlyif  => [
       "test -d ${::boxen_home}/go",
     ],
+    unless  => "which go && go version | grep ' go${version} '",
     logoutput => true
   } ->
   exec { 'unarchive':
