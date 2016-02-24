@@ -53,6 +53,13 @@ class golang (
     unless  => "which go && go version | grep ' go${version} '",
     require => Package['curl'],
   } ->
+  exec { 'remove-previous':
+    command => "rm -rf ${::boxen_home}/go",
+    onlyif  => [
+      "test -d ${::boxen_home}/go",
+      "which go && test `go version | cut -d' ' -f 3` != 'go${version}'",
+    ],
+  } ->
   exec { 'unarchive':
     command => "tar -C ${::boxen_home} -xzf ${download_dir}/go-${version}.tar.gz && rm ${download_dir}/go-${version}.tar.gz",
     onlyif  => "test -f ${download_dir}/go-${version}.tar.gz",
@@ -64,16 +71,6 @@ class golang (
       "test -d ${::boxen_home}/chgo",
     ],
   }
-
-  exec { 'remove-previous':
-    command => "rm -rf ${::boxen_home}/go",
-    onlyif  => [
-      "test -d ${::boxen_home}/go",
-      "which go && test `go version | cut -d' ' -f 3` != 'go${version}'",
-    ],
-    before  => Exec['unarchive'],
-  }
-
 
   file { "${::boxen_home}/env.d/20-go.sh":
     content => template('golang/golang.sh.erb'),
