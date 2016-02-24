@@ -52,19 +52,19 @@ class golang (
     creates => "${download_dir}/go-${version}.tar.gz",
     unless  => "which go && go version | grep ' go${version} '",
     require => Package['curl'],
-    logoutput => true,
+    logoutput => true
   } ->
   exec { 'remove-previous':
     command => "rm -rf ${::boxen_home}/go",
     onlyif  => [
       "test -d ${::boxen_home}/go",
     ],
-    logoutput => true,
+    logoutput => true
   } ->
   exec { 'unarchive':
     command => "tar -C ${::boxen_home} -xzf ${download_dir}/go-${version}.tar.gz && rm ${download_dir}/go-${version}.tar.gz",
     onlyif  => "test -f ${download_dir}/go-${version}.tar.gz",
-    logoutput => true,
+    logoutput => true
   }
 
   exec { 'remove-chgo':
