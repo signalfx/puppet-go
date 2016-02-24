@@ -57,9 +57,8 @@ class golang (
   exec { 'remove-previous':
     command => "rm -rf ${::boxen_home}/go",
     onlyif  => [
-      "test -d ${::boxen_home}/go",
+      "test -f ${download_dir}/go-${version}.tar.gz",
     ],
-    unless  => "which go && go version | grep ' go${version} '",
     logoutput => true
   } ->
   exec { 'unarchive':
