@@ -57,7 +57,6 @@ class golang (
     command => "rm -rf ${::boxen_home}/go",
     onlyif  => [
       "test -d ${::boxen_home}/go",
-      "which go && test `go version | cut -d' ' -f 3` != 'go${version}'",
     ],
   } ->
   exec { 'unarchive':
