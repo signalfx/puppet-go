@@ -93,7 +93,6 @@ class golang (
       "test -f ${::boxen_home}/bin/goupdate.sh",
       "test -f ${::boxen_home}/env.d/20-go.sh",
     ],
-    after => Exec['download'],
     logoutput => true,
     require => File["${::boxen_home}/bin/goupdate.sh"]
   }
